@@ -1,0 +1,208 @@
+% --- Simple 2D PWR pin-cell geometry for Serpent tutorial
+
+/************************
+ * Material definitions *
+ ************************/
+
+% --- Fuel material (3.0 wt-% enriched uranium dioxide), density 10.1 g/cm3
+
+mat fuel     -10.1 rgb 240 240 100
+92235.03c    -0.02644492
+92238.03c    -0.85505247
+ 8016.03c    -0.11850261
+
+% --- Cladding material for fuel rod
+%     (100 % natural zirconium)
+
+mat clad     -6.55 rgb 150 150 150
+40000.03c    -1.0
+
+% --- Water at 1.0 g/cm3
+%     Defined using atomic fractions for the composition.
+%     Hydrogen is flagged as a bound scatterer with the "moder"-card
+
+mat water    -1.0 moder MyThermLib 1001 rgb 200 200 255
+ 1001.03c     2.0
+ 8016.03c     1.0
+
+% --- Define thermal scattering libraries associated with hydrogen in light water
+
+therm MyThermLib lwj3.00t
+
+/************************
+ * Geometry definitions *
+ ************************/
+
+% --- Fuel pin structure
+% --- pin card defines entire universe consisting of material regions
+% pin [universe name] [MAT1 R1] [MAT2 R2] [MAT]
+pin p1
+fuel    0.4025
+clad    0.4750
+water
+
+% --- Square surface with 1.5 cm side centered at (x,y) = (0,0)
+% --- NOT CUBE, x,y = [0.0 0.0] with d = 0.75
+
+surf s1 sqc 0.0 0.0 0.75
+
+% --- Cell c1 belongs to the base universe 0, is filled with the pin p1
+%     and covers everything inside surface s1
+
+cell c1 0 fill p1   -s1
+
+% --- Cell c2 belongs to the base universe 0, is defined as an "outside" cell
+%     and covers everything outside surface s1
+
+cell c2 0 outside    s1
+
+% ------------------------------------------------------------
+/******************
+ * Run parameters *
+ ******************/
+
+% --- Neutron population: 5000 neutrons per cycle, 100 active / 20 inactive cycles
+
+set pop 15000 100 20
+
+% --- Boundary condition (1 = black, 2 = reflective, 3 = periodic)
+
+set bc 2
+
+
+% ------------------------------------------------------------
+% --- Geometry plots
+%     First two plots are perpendicular to z-axis i.e. xy-plots (3)
+
+% --- First plot is 200 by 200 pixels and covers the whole geometry: -0.75 < (x,y) < 0.75
+%plot 3  200  200
+
+% --- Second plot is 1000 by 1000 pixels, from axial height z = 0.0
+%     and covers more than the whole geometry: -2.25 < (x,y) < 2.25
+%plot 3 1000 1000 0.0 -2.25 2.25 -2.25 2.25
+
+% --- The third plot is perpendicular to y-axis (2) i.e. an xz-plot
+%plot 2  200  200
+
+% --- 200 by 200 pixel meshplot that covers the whole geometry: -0.75 < (x,y) < 0.75
+%mesh 3  200  200
+
+% ------------------------------------------------------------
+ % Single isotope materials for detectors
+% mat name dens nazid fraction
+mat O16  1.50  8016.09c 1. 
+mat U235 1. 92235.09c 1.
+mat U238 1. 92238.09c 1.
+
+%Cladding
+%Water
+det neutron_flux_u5 dr 1 U235 dm fuel
+det neutron_flux_u8 dr 1 U238 dm fuel
+det neutron_flux_ox dr 1 O16  dm fuel
+
+%positive numbers (microscopic x-section) independent of material density
+%negative numbers (macro. x-section) results multiplied by materials density
+det total_RR   dr -1 fuel dm fuel 
+               dr -1 U235 dm fuel 
+               dr -1 U238 dm fuel 
+               dr -1 O16  dm fuel 
+
+det total_FR dr -6 fuel   dm fuel 
+             dr -6 U235   dm fuel
+             dr -6 U238   dm fuel
+
+det total_CR dr -2 fuel   dm fuel
+             dr -2 U235   dm fuel
+             dr -2 U238   dm fuel
+             dr -2 O16    dm fuel
+
+det capture_102 dm fuel dr 18 U235  dt 3 flux_fuel
+                   dr 18 U238  dt 3 flux_fuel
+                   dr 102 U235 dt 3 flux_fuel
+                   dr 102 U238 dt 3 flux_fuel
+                   dr 102 O16  dt 3 flux_fuel
+
+det flux_fuel dm fuel
+det total_flux 
+
+% --- Detector that calculates the elastic scattering reaction rate in the system
+%     Name of the detector is elastic.
+%     The detector uses response number -3 (total elastic scattering cross section)
+%     of the material at the interaction site (keyword: void)
+
+det elastic dr -3 void
+
+% --- A meshplot that shows the value of a detector response throughout the geometry (type 8)
+%     The colormap that is used is "cold" (colormap 2)
+%     The detector linked to this meshplot is named "elastic"
+%     Orientation is xy (3), and output size is 200 by 200 pixel
+
+mesh 8 2 elastic 3  200  200
+
+% --- Detector that calculates the capture reaction rate in the system
+%     Name of the detector is capture.
+%     The detector uses response number -2 (total capture cross section)
+%     of the material at the interaction site (keyword: void)
+
+det capture dr -2 void
+det fission dr -6 void
+
+% --- A meshplot that shows the value of a detector response throughout the geometry (type 8)
+%     The colormap that is used is "cold" (colormap 2)
+%     The detector linked to this meshplot is named "capture"
+%     Orientation is xy (3), and output size is 200 by 200 pixel
+
+mesh 8 2 capture 3  200  200
+
+% --- Detector that calculates the capture reaction rate in the fuel material
+%     Name of the detector is capture.
+%     The detector uses response number -2 (total capture cross section)
+%     of the material at the interaction site (keyword: void)
+%     Only scores interactions in material "fuel"
+
+det capturefuel dr -2 void dm fuel
+det fissionfuel dr -6 void dm fuel
+
+
+% --- A meshplot that shows the value of a detector response at fuel (type 8)
+%     The colormap that is used is "hot" (colormap 1)
+%     The detector linked to this meshplot is named "capturefuel"
+%     Orientation is xy (3), and output size is 200 by 200 pixel
+
+mesh 8 2 capturefuel 3  200  200
+
+
+% --- Detector that calculates the radial fission distribution in the fuel:
+%     Name of the detector is RadialFission.
+%     The detector uses response number -6 (total fission cross section)
+%     of the material at the interaction site (keyword: void)
+%     Detector only scores interactions at material "fuel" ("dm fuel").
+%     Detector calculates the spatial distribution using a cylindrical mesh "dn 1"
+%     with 20 bins in the radial direction between 0.0 and 0.4025 cm ("0.0 0.4025 20")
+%     with 1 bin in the angular direction between 0 and 360 degrees ("0 360 1")
+%     with 1 bin in the axial direction that extends from -infinity to infinity ("0 0 1")
+
+det RadialFission dr -6 void dm fuel dn 1 0.0 0.4025 200 0 360 1 0 0 1
+
+% --- Detector that calculates the radial capture distribution in the fuel:
+%     Name of the detector is RadialCapture.
+%     The detector uses response number -2 (total capture cross section)
+%     of the material at the interaction site (keyword: void)
+%     Detector only scores interactions at material "fuel" ("dm fuel").
+%     Detector calculates the spatial distribution using a cylindrical mesh "dn 1"
+%     with 20 bins in the radial direction between 0.0 and 0.4025 cm ("0.0 0.4025 20")
+%     with 1 bin in the angular direction between 0 and 360 degrees ("0 360 1")
+%     with 1 bin in the axial direction that extends from -infinity to infinity ("0 0 1")
+
+det RadialCapture dr -2 void dm fuel dn 1 0.0 0.4025 200 0 360 1 0 0 1
+
+
+% --- Set system linear power to 200 W/cm (this is a 2D system)
+
+set power 200
+
+
+% ------------------------------------------------------------
+% --- Cross section library file path
+
+set acelib "/mnt/c/Users/vicen/Documents/Serpent/xsdata/endfb7/sss_endfb7u.xsdata"
