@@ -19,7 +19,8 @@ mat fuelsalt     -4.264
 
 % --- "Surface" at infinity
 
-surf s1 inf
+% surf s1 cuboid -50 50 -50 50 -50 50
+surf s1 cuboid -100 100 -100 100 -100 100
 
 % --- Cell c1 belongs to the base universe 0, contains the material fuel
 %     and covers everything inside surface s1
@@ -38,6 +39,8 @@ cell c2 0 outside    s1
 % --- Neutron population: 5000 neutrons per cycle, 100 active / 20 inactive cycles
 
 set pop 5000 100 20
+set bc 2
+set his 1
 
 /******************
  * Setting Detector *

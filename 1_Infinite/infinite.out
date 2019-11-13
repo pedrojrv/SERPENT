@@ -63,7 +63,7 @@
 
  Nuclide    1 / 5 : 11023.03c -- sodium 23 (Na-23)
 
- Pointers                     : 32849 6447
+ Pointers                     : 32728 6447
  Primary type                 : Transport
  Nuclide ZAI                  : 110230
  Library ID                   : 03c
@@ -140,7 +140,7 @@
 
  Nuclide    2 / 5 : 17035.03c -- chlorine 35 (Cl-35)
 
- Pointers                     : 14504 11139
+ Pointers                     : 14383 11139
  Primary type                 : Transport
  Nuclide ZAI                  : 170350
  Library ID                   : 03c
@@ -351,7 +351,7 @@
 
  Nuclide    3 / 5 : 17037.03c -- chlorine 37 (Cl-37)
 
- Pointers                     : 26660 11415
+ Pointers                     : 26539 11415
  Primary type                 : Transport
  Nuclide ZAI                  : 170370
  Library ID                   : 03c
@@ -483,7 +483,7 @@
 
  Nuclide    4 / 5 : 92235.03c -- uranium 235 (U-235)
 
- Pointers                     : 7269 105807
+ Pointers                     : 7148 105807
  Primary type                 : Transport
  Nuclide ZAI                  : 922350
  Library ID                   : 03c
@@ -578,7 +578,7 @@
 
  Nuclide    5 / 5 : 92238.03c -- uranium 238 (U-238)
 
- Pointers                     : 10889 106635
+ Pointers                     : 10768 106635
  Primary type                 : Transport
  Nuclide ZAI                  : 922380
  Library ID                   : 03c
@@ -682,8 +682,8 @@ Material "fuelsalt":
  - Material is included in geometry
  - Atom density 5.40640E-02 1/barn*cm
  - Mass density 4.26400E+00 g/cm3
- - Volume 5.23599E+05 cm3
- - Mass 2.23263E+06 g
+ - Volume 0.00000E+00 cm3
+ - Mass 0.00000E+00 g
  - Photon emission rate 0.00000E+00 1/s
  - Neutron emission rate 0.00000E+00 1/s
  - 5 nuclides in composition
