@@ -1,0 +1,62 @@
+% ------------------------------------------------------------------
+% --------- CORE BARREL: Universe 280 : Inner Yellow SS  -----------
+% ------------------------------------------------------------------
+
+% --- SS316 (Stainless Steel Infinite Universe) 272
+%     Infintite Surface named 727
+%     Cell 266 belonging to universe 272 made of material SS316874
+surf 727 inf
+cell 266 272 SS316874 -727
+
+
+%     Cylinder at origin (0,0) with r=165cm truncated between [41.6, 572]
+%     Cylinder at origin (0,0) with r=167.2cm truncated between [41.6, 572]
+%     Cell 212 belonging to universe 280 filled with universe 272
+surf 676 cylz 0.000000 0.000000 165.000000 41.600000 572.850000
+surf 677 cylz 0.000000 0.000000 167.200000 41.600000 572.850000
+surf 679 pz 41.600000
+surf 678 pz 572.850000
+cell 212 280 fill 272  676 -677 679 -678 
+
+
+% ------------------------------------------------------------------
+% ------ DOWNCOMER : Universe 280 : Sandwiched Blue FLiBe ----------
+% ------------------------------------------------------------------
+
+% --- Infinte FLiBe Coolant - Universe 273
+%     Infintite Surface named 698
+%     Cell 225 belonging to universe 273 made of material Flibe874
+surf 698 inf
+cell 225 273 Flibe874 -698
+
+%     Cylinder at origin (0,0) with r=167.2cm truncated between [41.6, 572]
+%     Cylinder at origin (0,0) with r=170cm truncated between [41.6, 572]
+%     Cell 213 belonging to universe 280 filled with universe 273
+surf 680 cylz 0.000000 0.000000 167.200000 41.600000 572.850000
+surf 681 cylz 0.000000 0.000000 170.000000 41.600000 572.850000
+surf 683 pz 41.600000
+surf 682 pz 572.850000
+cell 213 280 fill 273  680 -681 683 -682 
+
+
+
+% ------------------------------------------------------------------
+% ----------- VESSEL : Universe 280 : Outer Yellow SS  -------------
+% ------------------------------------------------------------------
+
+% --- SS316 (Stainless Steel Infinite Universe) - Universe 274
+%     Infintite Surface named 724
+%     Cell 263 belonging to universe 274 made of material SS316874
+surf 724 inf
+cell 263 274 SS316874 -724
+
+
+%     Cylinder at origin (0,0) with r=170cm truncated between [41.6, 572]
+%     Cylinder at origin (0,0) with r=175cm truncated between [41.6, 572]
+%     Cell 212 belonging to universe 280 filled with universe 272
+surf 684 cylz 0.000000 0.000000 170.000000 41.600000 572.850000
+surf 685 cylz 0.000000 0.000000 175.000000 41.600000 572.850000
+surf 687 pz 41.600000
+surf 686 pz 572.850000
+cell 214 280 fill 274  684 -685 687 -686 
+

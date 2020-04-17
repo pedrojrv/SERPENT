@@ -1,0 +1,94 @@
+/*** Memosa core criticality  ***/
+
+
+/************************
+ * Material definitions *
+ ************************/
+
+% --- Fuel material FliBe running at a temperature of 720C
+
+mat fuelmix -2.1286 tmp 993 
+ 92235.09c 0.045
+ 92238.09c 0.855
+ 9019.09c 146.8  
+ 3007.09c 65
+ 4009.09c 29.1
+ Zr-nat.09c 5 
+ 
+
+mat fuelpipe -8.86 tmp 993
+ Ni-nat.09c 0.6857 
+ Mo-nat.09c 0.16
+ Cr-nat.09c 0.07
+ Fe-nat.09c 0.04
+ Si-nat.09c 0.01
+ 25055.09c 0.008
+ W-nat.09c 0.005
+ 13027.09c 0.0025
+ Ti-nat.09c 0.0025
+ Cu-nat.09c 0.0035
+ 27058.09c 0.0020
+ C-nat.09c 0.0008
+
+ 
+mat graphite -1.82 tmp 993
+ 6012.09c 1
+
+
+% --- Fuel pin structure
+
+pin p1
+fuelmix    15
+fuelpipe   15.3
+graphite
+
+
+% --- Square surface with 1.5 cm side centered at (x,y) = (0,0)
+surf s1 cuboid -60 60 -60 60 -60 60 
+surf s2 cuboid -65 65 -65 65 -65 65
+
+% Lattice definitions
+lat core 1 0.0 0.0 3 3 40
+p1 p1 p1 
+p1 p1 p1
+p1 p1 p1
+
+
+% --- Cell c1 belongs to the base universe 0, is filled with the pin p1
+%     and covers everything inside surface s1
+
+cell c1 0 fill core   -s1
+
+% We want graphite between the lattice and the cuboid.
+cell c3 0 graphite s1 -s2
+
+% --- Cell c2 belongs to the base universe 0, is defined as an "outside" cell
+%     and covers everything outside surface s1
+cell c2 0 outside    s2
+
+
+/******************
+ * Run parameters *
+ ******************/
+
+% --- Neutron population: 5000 neutrons per cycle, 100 active / 20 inactive cycles
+
+set pop 5000 100 20
+
+% --- Boundary condition (1 = black, 2 = reflective, 3 = periodic)
+
+set bc 2
+
+% --- Geometry plots
+%     First two plots are perpendicular to z-axis i.e. xy-plots (3)
+% --- First plot is 200 by 200 pixels and covers the whole geometry: -0.75 < (x,y) < 0.75
+% --- Second plot is 1000 by 1000 pixels, from axial height z = 0.0 
+%     and covers more than the whole geometry: -2.25 < (x,y) < 2.25
+
+plot 3 1000 1000 
+
+% --- The third plot is perpendicular to y-axis (2) i.e. an xz-plot
+
+plot 2  1000 1000
+
+set acelib 

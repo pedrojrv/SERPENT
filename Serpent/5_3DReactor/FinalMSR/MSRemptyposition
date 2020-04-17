@@ -1,0 +1,10 @@
+/***** Vertical layers (cells) for empty position ****/
+% --- Empty Cell of Molten Salt
+
+pin pEmptySalt
+fuel_salt  
+
+% --- 3D universe for empty lattice positions
+%     These cells are part of an universe "_"
+
+cell cEP0 _ fill pEmptySalt    sRodBot -sRodTop  

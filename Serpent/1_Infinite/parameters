@@ -1,0 +1,14 @@
+/******************
+ * Run parameters *
+ ******************/
+% --- Neutron population: 5000 neutrons per cycle, 100 active / 20 inactive cycles
+set pop 100 60 20
+
+% Sets unresolved resonance probability table sampling on. 
+set ures 1
+
+% k-eff batching history - shannon entropy
+set his 1
+
+% --- Cross section library file path
+set acelib "/mnt/c/Users/vicen/Documents/Serpent/xsdata/endfb7/sss_endfb7u.xsdata"

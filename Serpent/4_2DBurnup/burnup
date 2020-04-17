@@ -1,0 +1,268 @@
+% --- Simple 2D EPR assembly geometry for Serpent tutorial
+
+/************************
+ * Material definitions *
+ ************************/
+
+% --- 3.0 wt-% enriched UO2
+%     Temperature is set to 950 K
+
+mat fuelNoGad  -10.3070 tmp 950.0 rgb 255 255 150 burn 1
+92235.09c       -0.02644492
+92238.09c       -0.85505247
+ 8016.09c       -0.11850261
+
+% --- 0.25 wt-% enriched UO2 with 8.0 wt-% of Gd2O3
+%     Temperature is set to 650 K
+
+mat fuelYesGad -10.3070 tmp 950.0 rgb 150 255 150 burn 1
+92235.06c       -0.00202753
+92238.06c       -0.80898345
+ 8016.06c       -0.11957908
+64152.06c       -0.00013411
+64154.06c       -0.00148108
+64155.06c       -0.01012049
+64156.06c       -0.01408805
+64157.06c       -0.01083999
+64158.06c       -0.01731511
+64160.06c       -0.01543111
+
+% --- Cladding material Zircaloy-4
+%     [Composition from PNNL-15870, Rev. 1]
+
+mat Zircaloy4 -6.56000E+00 tmp 610
+ 8016.03c  -1.19276E-03
+24050.03c  -4.16117E-05
+24052.03c  -8.34483E-04
+24053.03c  -9.64457E-05
+24054.03c  -2.44600E-05
+26054.03c  -1.12572E-04
+26056.03c  -1.83252E-03
+26057.03c  -4.30778E-05
+26058.03c  -5.83334E-06
+40090.03c  -4.97862E-01
+40091.03c  -1.09780E-01
+40092.03c  -1.69646E-01
+40094.03c  -1.75665E-01
+40096.03c  -2.89038E-02
+50112.03c  -1.27604E-04
+50114.03c  -8.83732E-05
+50115.03c  -4.59255E-05
+50116.03c  -1.98105E-03
+50117.03c  -1.05543E-03
+50118.03c  -3.35688E-03
+50119.03c  -1.20069E-03
+50120.03c  -4.59220E-03
+50122.03c  -6.63497E-04
+50124.03c  -8.43355E-04
+
+% --- Coolant is water with 650 ppm soluble boric acid added
+%     The temperature of water is 583 K
+%     Density is calculated based on a pressure of 15.5 MPa
+%     Hydrogen is flagged as a bound scatterer with the "moder"-card
+
+mat water -0.635 tmp 583 moder lwtr 1001 rgb 200 200 255
+O-16.03c   3.330861e-01
+H-1.03c    6.663259e-01
+B-10.03c   7.186970e-05
+B-11.03c   2.892846e-04
+
+% --- Define thermal scattering libraries associated with hydrogen in light water
+%     As there are no readymade thermal scattering libraries for 583 K
+%     We will tell Serpent to interpolate using two bounding libraries:
+%     -lwj3.11t (H-1 in light water at 574 K)
+%     -lwj3.13t (H-1 in light water at 624 K)
+%     See also: http://montecarlo.vtt.fi/download/SSS_THERMAL.pdf
+
+therm lwtr 583 lwj3.11t lwj3.13t
+
+/************************
+ * Geometry definitions *
+ ************************/
+
+% --- Normal fuel rod (no gadolinia in fuel)
+
+pin FF
+fuelNoGad  0.3975
+void       0.4125
+Zircaloy4  0.4750
+water
+
+% --- Gadolinium fuel rod
+
+pin GG
+fuelYesGad  0.3975
+void        0.4125
+Zircaloy4   0.4750
+water
+
+% --- Empty instrumentation thimble
+
+pin ii
+water       0.5725
+Zircaloy4   0.6125
+water
+
+% --- Empty control rod channel
+
+pin cc
+water       0.5725
+Zircaloy4   0.6125
+water
+
+% --- Empty lattice position (just water)
+
+pin ww
+water
+
+% --- Pin lattice definition, name of the lattice "lat1"
+%     Lattice type 1 (square lattice)
+%     Lattice centered at 0.0 0.0
+%     19 x 19 lattice elements (17x17 fuel rods + 1 layer of water)
+%     Lattice pitch 1.26 cm
+%     We'll utilize our knowledge of the 1/8 symmetry so that
+%     we'll only have to type in 1/8th of the assembly
+
+lat lat1 1 0.0 0.0 19 19 1.26
+ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww
+ww ww ww ww ww ww ww ww ww FF FF FF FF FF FF FF FF FF ww
+ww ww ww ww ww ww ww ww ww FF FF FF FF FF FF FF FF ww ww
+ww ww ww ww ww ww ww ww ww cc FF FF cc FF FF GG ww ww ww
+ww ww ww ww ww ww ww ww ww FF GG FF FF FF cc ww ww ww ww
+ww ww ww ww ww ww ww ww ww FF FF FF FF GG ww ww ww ww ww
+ww ww ww ww ww ww ww ww ww cc FF FF cc ww ww ww ww ww ww
+ww ww ww ww ww ww ww ww ww FF FF GG ww ww ww ww ww ww ww
+ww ww ww ww ww ww ww ww ww FF FF ww ww ww ww ww ww ww ww
+ww ww ww ww ww ww ww ww ww ii ww ww ww ww ww ww ww ww ww
+ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww
+ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww
+ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww
+ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww
+ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww
+ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww
+ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww
+ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww
+ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww ww
+
+% --- Tell Serpent to apply a symmetry to the lattice "lat1"
+%     Symmetry axis is the z-axis (3)
+%     Symmetry boundary condition is reflective (2)
+%     Symmetry axis is located at coordinates (0.0 0.0)
+%     Symmetry covers an angle starting from 270 degrees
+%     and extending for 45 degrees
+
+set usym lat1 3 2 0.0 0.0 270 45
+
+% --- A square surface around the fuel assembly
+
+surf s1 sqc  0.0 0.0 10.752
+
+% --- Cell c1 belongs to the base universe 0, is filled with the lattice lat1
+%     and covers everything inside surface s1
+
+cell c1 0 fill lat1     -s1
+
+% --- Cell c2 belongs to the base universe 0, is defined as an "outside" cell
+%     and covers everything outside surface s1
+
+cell c2 0 outside        s1
+
+/******************
+ * Run parameters *
+ ******************/
+
+% --- Assembly linear power is 420 kW
+
+set power 42000
+
+% --- Boundary condition (1 = black, 2 = reflective, 3 = periodic)
+
+set bc 2
+
+% --- Neutron population: 10000 neutrons per cycle, 100 active / 20 inactive cycles
+
+set pop 5000 100 20
+
+% --- XY-plot (3), which is 700 by 700 pixels and covers the whole geometry
+
+plot 3 700 700
+
+% --- XY-meshplot (3), which is 700 by 700 pixels and covers the whole geometry
+
+mesh 3 700 700
+
+
+/***************************************
+ * Settings for the burnup calculation *
+ ***************************************/
+
+% --- Burnup points for the burnup calculation (in MWd/kgU)
+%     Too long intervals between the burnup points will decrease the
+%     accuracy of the burnup calculation, especially during the burn-out 
+%     of burnable absorber 
+
+dep butot 0.1  0.5  1  3  5  7  9  11  13  15  17  19
+
+% --- Material division for burnup calculation
+%     Treat different pins of fuelNoGad as separate depletion zones (sep 1)
+
+div fuelNoGad  sep 1
+
+% --- Material division for burnup calculation
+%     Treat different pins of fuelYesGad as separate depletion zones (sep 1)
+%     additionally divide each of those fuel pellets into 10 equal volume rings
+%     between radial coordinates of 0.0 and 0.3975
+
+div fuelYesGad sep 1 subr 10 0.0 0.3975
+
+% --- Calculate material volumes before simulation by
+%     sampling 10 million random points in the geometry.
+%     Specifying the material volumes is crucial in burnup calculations
+
+set mcvol 10000000
+
+% --- Nuclide inventory: these nuclides will be included in the
+%     depletion output file burn_dep.m. The list can be changed
+%     after the simulation has concluded if needed. Then you can run
+%     sss2 -rdep burn
+%     which will make Serpent re-read the inventory and re-produce the
+%     depletion output file.
+
+set inventory
+ 922350
+ 942390
+ 641550
+ 641570
+
+% --- Use predictor corrector method for the depletion solution
+%     leli: Linear extrapolation on predictor
+%           Linear interpolation on corrector
+%     10 10: 10 substeps on predictor, 10 substeps on corrector
+
+set pcc leli 10 10
+
+% --- Decay data library needs to be specified for burnup calculations
+
+set declib "/mnt/c/Users/vicen/Documents/Serpent/xsdata/endfb7/sss_endfb7.dec"
+
+% --- Neutron induced fission yield library needs to be specified for
+%     burnup calculations
+
+set nfylib "/mnt/c/Users/vicen/Documents/Serpent/xsdata/endfb7/sss_endfb7.nfy"
+
+% --- Reduce unionized energy grid size in order to save some memory
+%     Use grid thinning with 5e-5 reconstruction tolerance between
+%     1e-9 and 15 MeV.
+
+set egrid 5e-5 1e-9 15.0
+
+
+set opti 1
+
+
+% ------------------------------------------------------------
+% --- Cross section library file path
+
+set acelib "/mnt/c/Users/vicen/Documents/Serpent/xsdata/endfb7/sss_endfb7u.xsdata"
+
+

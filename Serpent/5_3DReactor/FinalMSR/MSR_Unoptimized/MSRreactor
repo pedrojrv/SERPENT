@@ -1,0 +1,88 @@
+% --- Research reactor input for Serpent tutorial
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% We'll start from an infinite water geometry %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/******** Radial boundaries of the core **************/
+
+% --- Infinite surface as a boundary
+
+surf sINF cylz 0.0 0.0 403.86
+
+% --- Cell cIN contains reactor
+
+cell cIN  0 fill reactor -sINF
+
+% --- Cell cOUT is defined as an outside cell
+
+cell cOUT 0 outside  sINF
+
+
+% --- Transformation for the control rod movement
+%     The values given are transformations in (x, y, z)
+%     Transformation of  0.0 means fully inserted.
+%     Transformation of 25.0 means 50 %  inserted.
+%     Transformation of 50.0 means 100 % inserted.
+%     e.g.
+
+trans u CRuni 0.0 0.0 728
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Link additional input files here %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --- Link the materials file to this input
+ 
+include "MSRmaterials"
+
+% --- Link the reactorpool file to this input
+
+include "MSRreactorpool"
+
+% --- Link the fuelrod file to this input
+
+include "MSRfuelrod"
+
+% --- Link the core file to this input
+
+include "MSRcore"
+
+% --- Link the emptyposition file to this input 
+
+include "MSRemptyposition"
+
+% --- Link the guidetube file to this input
+
+include "MSRguidetube"
+
+% --- Link the controlrod file to this input
+
+include "MSRcontrolrod"
+
+/******************
+ * Run parameters *
+ ******************/
+
+% --- Neutron population: 10000 neutrons per cycle, 100 active / 50 inactive cycles
+
+set pop 10000 100 50
+
+% --- Geometry plots
+
+% --- XY-plot TOP VIEW
+
+plot 3 1000 1000   0 -1000 1000 -1000 1000
+
+% --- XZ-plot SIDE VIEW
+
+plot 2 1000 1000   0 -1000 1000 -1000 1000
+
+
+% --- XZ-plot, level of control rods
+
+plot 2 500 667 55.0 -500 500 -500 500
+plot 2 500 667 58.0 -500 500 -500 500
+plot 2 500 667 60.0 -500 500 -500 500
+plot 2 500 667 62.0 -500 500 -500 500
+plot 2 500 667 63.0 -500 500 -500 500

@@ -1,0 +1,100 @@
+% --- Research reactor input for Serpent tutorial
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% We'll start from an infinite water geometry %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/******** Radial boundaries of the core **************/
+
+% --- Infinite surface as a boundary
+
+surf sINF cylz 0.0 0.0 100
+
+% --- Cell cIN contains water
+
+cell cIN  0 fill reactor -sINF
+
+% --- Cell cOUT is defined as an outside cell
+
+cell cOUT 0 outside  sINF
+
+
+% --- Transformation for the control rod movement
+%     The values given are transformations in (x, y, z)
+%     Transformation of  0.0 means fully inserted.
+%     Transformation of 25.0 means 50 %  inserted.
+%     Transformation of 50.0 means 100 % inserted.
+%     e.g.
+
+trans u CRuni 0.0 0.0 30.0
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Link additional input files here %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --- Link the materials file to this input
+ 
+include "materials"
+
+% --- Link the reactorpool file to this input
+
+include "reactorpool"
+
+% --- Link the fuelrod file to this input
+
+include "fuelrod"
+
+% --- Link the core file to this input
+
+include "core"
+
+% --- Link the emptyposition file to this input 
+
+include "emptyposition"
+
+% --- Link the guidetube file to this input
+
+include "guidetube"
+
+% --- Link the controlrod file to this input
+
+include "controlrod"
+
+/******************
+ * Run parameters *
+ ******************/
+
+% --- Neutron population: 10000 neutrons per cycle, 100 active / 50 inactive cycles
+
+set pop 10000 100 50
+
+% --- Geometry plots
+% --- XY-plot TOP VIEW
+plot 3 200 200 0 -100 100 -100 100
+% --- XZ-plot SIDE VIEW
+plot 2 200 200 0 -100 100 -100 100
+
+
+% ------------------ Fuel Rod Vis -------------------------
+% --- XY-plot
+% plot 3 200 200 0 -1 1 -1 1
+% --- XZ-plot
+% plot 2 100 400 0 -1 1 -50 50
+
+
+% ------------------ Core  Vis -------------------------
+% --- XY-plot at the level of axial midplane
+plot 3 500 500   0 -30 30 -30 30
+
+% --- XY-plot at the level of lower grid
+plot 3 500 500 -36 -30 30 -30 30
+
+% --- XZ-plot
+plot 2 500 667   0 -30 30 -40 40
+
+
+% --- XZ-plot, level of control rods
+
+plot 2 500 667 7.2 -30 30 -40 40
+

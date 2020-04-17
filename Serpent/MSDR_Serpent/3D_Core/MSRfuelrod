@@ -1,0 +1,28 @@
+% --- Pin definitions needed for fuel rods
+% --- Fuel part
+
+/******** Radial boundaries of the graphite pin **************/
+% --- Outer radius of Assembly 
+surf sSQC1 sqc 0.0 0.0 14.5161
+
+% --- Outer radius of the graphite reflector (boundary of the core)
+surf sSQC2 sqc 0.0 0.0 12.27709
+
+% --- Inner radius of the Vessel (boundary of the graphite)
+surf sRECT3 rect -2.239   2.239    -11.91639 11.91639
+surf sRECT4 rect  2.5997  7.077    -11.91639 11.91639
+surf sRECT5 rect  7.4384  11.91639 -11.91639 11.91639
+surf sRECT6 rect  -7.077 -2.5997    -11.91639 11.91639
+surf sRECT7 rect  -11.91639 -7.4384  -11.91639 11.91639
+
+/******** Radial cells of the reactor ****************/
+% --- Notice that these cells are part of the universe "reactor"
+
+cell cInnerSalt        F fuel_salt     -sSQC2  sRECT3 sRECT4 sRECT5 sRECT6 sRECT7  
+cell cGraphitePINF     F graphite      -sSQC1  sSQC2 
+cell cGraphiteSLAB1    F graphite      -sRECT3 
+cell cGraphiteSLAB2    F graphite      -sRECT4  
+cell cGraphiteSLAB3    F graphite      -sRECT5 
+cell cGraphiteSLAB4    F graphite      -sRECT6 
+cell cGraphiteSLAB5    F graphite      -sRECT7
+cell cGraphitePIN      F fuel_salt      sSQC1         
