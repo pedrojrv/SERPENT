@@ -1,0 +1,112 @@
+% ------------------------------------------------------------------
+% ------------- FUEL PEBBLE BED + TRISO PARTICLES  -----------------
+% ------------------------------------------------------------------
+
+% --- Flibe924 (FLiBe Coolant for Fuel FCC Unit Cell) - Universe 207
+%     Infintite Surface named 695
+%     Cell 221 belonging to universe 207 made of material Flibe924 (fill infinite)
+surf 695 inf
+cell 221 207 Flibe924 -695
+
+% --- Triso particle - Universe 204
+%     Defines an entire universe consisting of nested spherical shells 
+%     Universe_Name (204), mat1 rad1 mat2 rad2 ... last item is matrix material (Matrix1074)
+particle 204
+    fuel1pbw0 0.0200
+    Buffer1074 0.0300
+    iPyC1074 0.0335
+    SiC1074 0.0370
+    oPyC1074 0.0405
+    Matrix1074
+
+% --- Infinite 3D TRISO Lattice - Universe 205
+%     Type 6 is Cuboidal Lattice, (x, y) origin, lattice pitch, filler universe
+%     Lattice made of cubes where each cube contains nested TRISO particles (204) 
+lat 205 6 0. 0. 0.08860629 204
+
+% --- Single Fuel Pebble to be used in "pbed" (assuming all fuel pbs are the same) - U 206
+%     surface 696 specifies single pebble shell sphere position at (0, 0, 0) with radius of 1.25 and 1.4 cm
+%     Cell 222 belonging to universe 206 made of CG1074
+%     Cell 224 belonging to universe 206 made of Shell1074
+surf 696 sph 0.000000 0.000000 0.000000 1.251140
+surf 697 sph 0.000000 0.000000 0.000000 1.400000
+cell 222 206 CG1074 -696
+cell 223 206 fill 205 696 -697
+cell 224 206 Shell1074 697
+
+% --- Fuel Pebble beds (or unit cell) Specification
+%     pbed geometry belonging to universe 208 with background universe 207
+%     File contains X1 Y1 Z1 R1 U1 where R is radius and U is Universe
+%     Pebbles Organized in FCC with radius of 1.5 cm made of universe 206
+pbed 208 207 "fpb_pos1_60"
+
+% --- Pebble Bed Cube (FCC unit cell lattice cube) - Universe 282
+%     Surface 694 specifies cube of half-width 4.55
+%     Cell 220 belonging to universe 282 filled with universe 208
+surf 694 cube 0. 0. 0. 4.550828
+cell 220 282 fill 208 -694
+
+% --- Infinite 3D Lattice - Universe 209
+%     Type 6 is Cuboidal Lattice, (x, y) origin, lattice pitch, filler universe
+%     Lattice made of cubes where each cube contains an FCC pebble bed cube
+lat 209 6 0. 0. 4.550828 282
+
+
+
+
+% ------------------------------------------------------------------
+% ------------ FUEL PASSAGE: Universe 280: PINK dots ---------------
+% ------------------------------------------------------------------
+% Excluding CENTER passage (those are defined in Fuel A1-A4)
+% All surfaces are filled with universe 209 
+
+% --- Cylinders making upper passage (1)
+%     Cell 204 belonging to universe 280 filled with universe 209
+surf 652 cylz 0.000000 0.000000 71.000000 492.850000 572.850000
+surf 653 cylz 0.000000 0.000000 80.000000 492.850000 572.850000
+surf 655 pz 492.850000
+surf 654 pz 572.850000
+cell 204 280 fill 209  652 -653 655 -654 
+
+% --- Cones making UPPER downward cone passage (2)
+%     Cell 203 belonging to universe 280 filled with universe 209
+surf 648 cone 0.000000 0.000000 492.850000 71.000000 -122.975607
+surf 649 cone 0.000000 0.000000 430.500000 105.000000 261.870000
+surf 651 pz 430.500000
+surf 650 pz 492.850000
+cell 203 280 fill 209  648 -649 651 -650 
+
+% --- Cylinders making lower passage (3)
+%     Cell 199 belonging to universe 280 filled with universe 209
+surf 632 cylz 0.000000 0.000000 45.000000 41.600000 112.500000
+surf 633 cylz 0.000000 0.000000 75.410000 41.600000 112.500000
+surf 635 pz 41.600000
+surf 634 pz 112.500000
+cell 199 280 fill 209  632 -633 635 -634 
+
+% --- Cylinder and cone: building block for lower cone passage (4)
+%     Cell 202 belonging to universe 280 filled with universe 209
+surf 644 cylz 0.000000 0.000000 35.000000 144.820000 180.500000
+surf 645 cone 0.000000 0.000000 180.500000 105.000000 -241.297736
+surf 647 pz 144.820000
+surf 646 pz 180.500000
+cell 202 280 fill 209  644 -645 647 -646 
+
+% --- Cones: building block for lower cone passage (5)
+%     Cell 201 belonging to universe 280 filled with universe 209
+surf 640 cone 0.000000 0.000000 127.500000 45.000000 77.942286
+surf 641 cone 0.000000 0.000000 180.500000 105.000000 -241.297736
+surf 643 pz 127.500000
+surf 642 pz 144.820000
+cell 201 280 fill 209  640 -641 643 -642 
+
+% --- Cylinder and cone: building block for lower cone passage (6)
+%     Cell 200 belonging to universe 280 filled with universe 209
+surf 636 cylz 0.000000 0.000000 45.000000 112.500000 127.500000
+surf 637 cone 0.000000 0.000000 180.500000 105.000000 -241.297736
+surf 639 pz 112.500000
+surf 638 pz 127.500000
+cell 200 280 fill 209  636 -637 639 -638 
+
+
+

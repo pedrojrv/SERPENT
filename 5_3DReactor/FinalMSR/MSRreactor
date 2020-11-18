@@ -1,0 +1,112 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MODIFIED MOLTEN SALT DEMONSTRATION REACTOR  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/******** Radial boundaries of the core **************/
+% surf sINF cylz 0.0 0.0 428.00
+
+% --- Cell cIN contains the reactor (core,reflector,etc)
+% cell cIN  0 fill reactor -sINF
+% cell cIN  0 -sINF
+
+% --- Cell cOUT is defined as an outside cell
+% cell cOUT 0 outside       sINF
+
+ 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%             Control Rod Movement            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --- Transformation for the control rod movement
+%     The values given are transformations in (x, y, z)
+%     Control Rods Out: 0.0 0.0 728
+% trans u CRuni 0.0 0.0 728
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                RUN PARAMETERS               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --- Neutron population: 10000 neutrons per cycle, 100 active / 50 inactive cycles
+% set pop 20000 10000 150
+% set pop 10000 100 50
+set pop 1000 100 50
+
+% BOUNDARY CONDITION NOT WORKING
+% set bc 2
+
+% --- Optimization Parameters
+set opti 2
+
+% --- Set system power to 750 MWth (this is a 3D system)
+set power 750000000
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%               GEOMETRY PLOTS                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --- XY-plot TOP VIEW
+plot 3 1000 1000   0 -1000 1000 -1000 1000
+
+% --- XY-plot TOP VIEW
+plot 3 1000 1000   0 -500   500  -500  500
+
+% --- XZ-plot SIDE VIEW
+plot 2 1000 1000   0 -1000 1000 -1000 1000
+
+
+% --- XZ-plot, Control Rod Search
+%plot 2 500 667 55.0 -500 500 -500 500
+%plot 2 500 667 58.0 -500 500 -500 500
+%plot 2 500 667 60.0 -500 500 -500 500
+%plot 2 500 667 62.0 -500 500 -500 500
+%plot 2 500 667 63.0 -500 500 -500 500
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Setting Cross Section Libraries  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+set acelib "/mnt/c/Users/vicen/Documents/Serpent/xsdata/endfb7/sss_endfb7u.xsdata"
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Link additional input files here %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --- Link the materials file 
+include "MSRmaterials"
+
+% --- Link the reactorpool file 
+%     Contains dimension boundaries and definitions
+include "MSRreactorpool"
+
+% --- Link the graphite rod file 
+%     Contains graphite rod definitions
+include "MSRfuelrod"
+
+% --- Link the core file 
+%     Core geometry and pin allocation
+include "MSRcore"
+
+% --- Link the emptyposition file
+%     Empty fuel_salt position (pin)
+include "MSRemptyposition"
+
+% --- Link the guide tube file  
+%     Guide Tube for Control Rod
+include "MSRguidetube"
+
+% --- Link the controlrod file  
+%     Control Rod Dimensions definitions
+include "MSRcontrolrod"
+
+% --- Link the detectors file  
+include "MSRdetectors"
+
+% --- Link the burnup parameters file  
+include "MSRburnup"

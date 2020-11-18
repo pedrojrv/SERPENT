@@ -1,0 +1,59 @@
+% --- Pin lattice definition, name of the lattice "core"
+%     Lattice type 1 (square lattice)
+%     Lattice centered at 0.0 0.0
+%     29 x 29 lattice elements
+%     Lattice pitch 1.80 cm
+%     We'll utilize our knowledge of the 1/8 symmetry so that
+%     we'll only have to type in 1/8th of the assembly
+
+lat core 1 0.0 0.0 29 29 1.8
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ x x x x x x x x x x x x x x x
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ x x x x x x x x x x
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ F F F F _ _ _ x x x x x x _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ F F F F F F F _ _ x x x _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ F F F F F F F F _ _ x _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ F F F F F F F F F _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ F F F F F F F F F _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ F F F F F F F F _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ F F F F F F F _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ F F F F F F _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ F F F F c _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ F F F F _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ F F F _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ F F _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ F _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+
+% --- Tell Serpent to apply a symmetry to the lattice "core"
+%     Symmetry axis is the z-axis (3)
+%     Symmetry boundary condition is reflective (2)
+%     Symmetry axis is located at coordinates (0.0 0.0)
+%     Symmetry covers an angle starting from 270 degrees
+%     and extending for 45 degrees
+
+set usym core 3 2 0.0 0.0 270 45
+
+
+% --- 3D universe for lattice positions without a hole
+
+cell cSS0 x water                        -sLowerBot
+cell cSS1 x ssteel             sLowerBot -sLowerTop
+cell cSS2 x water              sLowerTop -sUpperBot
+cell cSS3 x ssteel             sUpperBot -sUpperTop
+cell cSS4 x water              sUpperTop
+
+

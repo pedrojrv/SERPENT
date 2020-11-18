@@ -1,0 +1,11 @@
+/***** Vertical layers (cells) for control rods ****/
+
+% --- 3D universe for control rods
+%     These cells are part of an universe "CRuni"
+
+cell cCR0 CRuni water  -sLowerBot
+cell cCR1 CRuni ssteel  sLowerBot  -sFuelBot
+cell cCR2 CRuni B4C     sFuelBot   -sFuelTop
+cell cCR3 CRuni ssteel  sFuelTop
+
+

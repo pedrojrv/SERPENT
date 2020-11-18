@@ -1,9 +1,0 @@
-/***** Vertical layers (cells) for control rods ****/
-
-% --- 3D universe for control rods
-%     These cells are part of an universe "CRuni"
-
-% WE NEED TO FIX THIS FOR ONLY 3 FEET INSERTION
-
-cell cCR0 CRuni fuel_salt -sRodBot 
-cell cCR1 CRuni B4C    sRodBot -sRodTop 

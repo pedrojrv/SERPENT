@@ -1,0 +1,75 @@
+/************************
+ * Material definitions *
+ ************************/
+% ------------------------------------------------------------------------
+% --- Fuel material (15.0 wt-% enriched uranium), density 10.1 g/cm3
+% negative means density and mass fraction after nuclide name
+% ------------------------------------------------------------------------
+
+mat fuel         -10.1
+    92235.03c    -0.150
+    92238.03c    -0.850
+    % 1001.03c    -0.005
+
+% Heavy Water of Density=1.11 g/cm3 
+% Thermal Scattering Library with name MyThermLib
+mat heavywater -1.11 moder MyThermLib 1002
+    1002.03c 2
+    8016.03c 1
+
+therm MyThermLib hwj3.00t
+
+
+/************************
+ * Geometry definitions - Surfaces *
+ ************************/
+
+% --- "Surface" at infinity
+% Sphere at (0,0,0) with 50 cm radius and infinite surface s1
+
+surf s0 sph  0 0 0 50
+surf s2 cube 0 0 0 70
+
+/************************
+ * Geometry definitions - Cells *
+ ************************/
+ 
+% --- Cell c1 belongs to the base universe 0, contains the material fuel
+%     and covers everything inside sphere s0
+cell c1 0 fuel      -s0
+
+% --- Cell c2 belongs to the base universe 0, is defined as an "outside" cell
+%     and covers everything outside surface s0
+cell c3 0 heavywater s0
+cell c2 0 outside    s2
+
+
+/******************
+ * Run parameters *
+ ******************/
+
+% --- Neutron population: 5000 neutrons per cycle, 100 active / 20 inactive cycles
+set pop 100 60 20
+
+% Sets unresolved resonance probability table sampling on. 
+set ures 1
+
+% Sets batch history record on K-eff, fission source entropy, etc. 
+% set entr defines the mesh structure used for calculating fission srouce entropy. 
+% The default mesh is 5x5x5 extending over the entire Geometry
+% Monitoring fission source convergence makes sense only in criticality source mode
+set his 1
+
+
+/******************
+ * Setting Detector *
+ ******************/
+% 1 - Detector for tallying the flux energy spectrum
+% 2 - Energy Grid definition: grid type 3 (uniform lethargy width) 500 bins
+det EnergyDetector de MyEnergyGrid
+ene MyEnergyGrid 3 500 1e-11 2e1
+
+
+
+% --- Cross section library file path
+set acelib "/mnt/c/Users/vicen/Documents/Serpent/xsdata/endfb7/sss_endfb7u.xsdata"

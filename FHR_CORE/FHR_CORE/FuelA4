@@ -1,0 +1,63 @@
+% ------------------------------------------------------------------
+% ----------------- FUEL A1 PEBBLE + TRISO -------------------------
+% ------------------------------------------------------------------
+
+% --- Flibe924 (FLiBe Coolant for A1 Fuel unit Cell) - Universe 235
+%     Infintite Surface named 706
+%     Cell 242 belonging to universe 235 made of material Flibe924 (fill infinite)
+surf 706 inf
+cell 242 235 Flibe924 -706
+
+% --- Defines an entire universe consisting of nested spherical shells (Triso particle) - 232
+%     Universe_Name (232), mat1 rad1 mat2 rad2 ... last item is matrix material (Matrix1074)
+particle 232
+    fuel1pba40 0.0200
+    Buffer1074 0.0300
+    iPyC1074 0.0335
+    SiC1074 0.0370
+    oPyC1074 0.0405
+    Matrix1074
+
+% --- Infinite 3D Lattice - Universe 233
+%     Universe_Name, Type 6 is Cuboidal Lattice, (x, y) origin, lattice pitch, filler universe
+%     Lattice made of cubes where each cube contains an FCC pebble bed cube (232)
+lat 233 6 0. 0. 0.08860629 232
+
+% --- Pebble Materil Specification (Low Dens Graphite - TRISO - High Dens Graphite) - U 213
+%     Cell 243 belonging to universe 234 made of CG1074
+%     Cell 245 belonging to universe 234 made of Shell1074
+%     Surfaces 696 and 697 are defined FuelW file
+cell 243 234 CG1074 -696
+cell 244 234 fill 233 696 -697
+cell 245 234 Shell1074 697
+
+% --- Graphite Pebble beds (or unit cell) Specification
+%     pbed geometry belonging to universe 236 with background universe 235
+%     File contains X1 Y1 Z1 R1 U1 where R is radius and U is Universe
+%     Pebbles Organized in FCC with radius of 1.5 cm made of universe 234
+pbed 236 235 "fpb_pos5_60"
+
+% --- Pebble Bed Cube (FCC unit cell lattice cube) - Universe 286
+%     Surface 705 specifies cube of half-width 4.55
+%     Cell 241 belonging to universe 286 filled with universe 236
+surf 705 cube 0. 0. 0. 4.550828
+cell 241 286 fill 236 -705
+
+% --- Infinite 3D Lattice - Universe 237
+%     Type 6 is Cuboidal Lattice, (x, y) origin, lattice pitch, filler universe
+%     Lattice made of cubes where each cube contains an FCC pebble bed cube
+lat 237 6 0. 0. 4.550828 286
+
+
+
+% ------------------------------------------------------------------
+% ----------------- FUEL A1 PEBBLE BED REGION ----------------------
+% ------------------------------------------------------------------
+
+% --- Cylinders making center inner passage of A1 region fuel passage
+%     Cell 198 belonging to universe 280 filled with universe 237
+surf 628 cylz 0.000000 0.000000 96.000000 180.500000 430.500000
+surf 629 cylz 0.000000 0.000000 105.000000 180.500000 430.500000
+surf 631 pz 180.500000
+surf 630 pz 430.500000
+cell 198 280 fill 237  628 -629 631 -630 

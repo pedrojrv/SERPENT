@@ -1,0 +1,11 @@
+% --- Material volumes:
+
+% Produced Wed Jul 17 11:40:51 2019 by MC volume calculation routine by
+% sampling 10000000 random points in the geometry.
+
+set mvol
+
+graphite        0 8.92891E+01 % (0.000)
+fuel_salt       0 9.08957E+00 % (0.001)
+Xe135           0 0.00000E+00 % (0.000)
+U233            0 0.00000E+00 % (0.000)
